@@ -1,27 +1,42 @@
-# Kapita Selekta 2026 — Desa Way Huwi
+# Kapita Selekta 2026 — Website UMKM Way Huwi
 
-Proyek Kapita Selekta — Kelompok 4: **Website Informasi UMKM Dusun 6, Desa Way Huwi**.
+**Digitalisasi Pendataan UMKM Berbasis Web untuk Meningkatkan Efektivitas Pengelolaan dan Akses Informasi di Desa Way Huwi** — Kelompok 4, Kapita Selekta Informatika ITERA 2026.
 
-## Isi Proyek
+## Struktur Repo
 
-| Folder / File | Keterangan |
+| Folder | Keterangan |
 |---|---|
-| `design/` | Desain HTML beranda (navbar, hero, footer) + mockup panel admin versi awal |
-| `panel-desa/` | Panel admin terpadu — 1 file (`index.html`, Tailwind + JS): login, kelola data UMKM per RT, iuran bulanan per RT dengan total |
-| `backup-design-html-v1/` | Salinan desain versi pertama (sebelum direvisi) |
-| `*.pkt`, `p4-*`, `p5-*` | Simulasi jaringan Cisco Packet Tracer (VLAN, OSPF, RIP, DHCP) |
-| `konfig_vlan_jarkom.txt` | Konfigurasi CLI jaringan |
-| `seb_bot/` | Bot pendamping |
-| `server.py` | Server lokal untuk preview desain (port 8778, no-cache) |
+| `umkm-web/` | **Frontend utama** — Next.js (sesuai proposal): beranda, tentang desa, direktori UMKM, detail UMKM, panduan usaha, halaman masuk |
+| `backup-design-html-v1/` | Backup desain HTML statis versi pertama (design system asli) |
 
-## Panel Desa (panel-desa/index.html)
+## Teknologi (sesuai proposal)
 
-Buka langsung di browser (atau via Live Server). Login dummy: **pemdes / desa123**.
+1. Framework: **Next.js** (App Router)
+2. Bahasa: **JavaScript**
+3. Styling: **CSS** (design system di `umkm-web/app/globals.css`)
+4. Database: **PostgreSQL (Neon)** — *tahap backend, data saat ini masih dummy di `umkm-web/data/umkm.js`*
+5. Desain UI/UX: **Figma**
+6. Kolaborasi: **GitHub**
 
-- **Kelola Data UMKM** — tambah/ubah/hapus + pencarian, filter kategori, dibagi per RT (RT 05, RT 05A, RT 06, RT 06A)
-- **Iuran Bulanan** — buku pencatatan iuran per RT: 12 kolom bulan, klik sel untuk mencatat/menghapus pembayaran, baris jumlah + total, dropdown tahun
-- Data tersimpan di `localStorage` (dummy, belum ada backend)
+## Fitur Frontend (dummy data, backend menyusul)
 
-## Anggota
+- **Beranda** — hero + pencarian + slider rekomendasi + statistik dinamis dari data
+- **Direktori UMKM** (`/umkm`) — pencarian, filter kategori, pengelompokan per jenis usaha
+- **Detail UMKM** (`/umkm/[id]`) — profil usaha, produk, alamat, kontak, jam operasional
+- **Tentang Desa** (`/tentang`) — profil desa + target SDG 8.3
+- **Panduan Usaha** (`/panduan`) — artikel pemasaran digital, permodalan, legalitas NIB
+- **Masuk** (`/masuk`) — shell login perangkat desa & pelaku UMKM (otentikasi backend menyusul)
 
-Kelompok 4 — Kapita Selekta, ITERA 2026.
+## Menjalankan
+
+```bash
+cd umkm-web
+npm install
+npm run dev
+```
+
+Buka `http://localhost:3000`.
+
+## Tim
+
+Kelompok 4 — Kapita Selekta Informatika, ITERA 2026.
