@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin &mdash; UMKM Dusun 6 Way Huwi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="admin.css?v=10">
+</head>
+<body>
+
+  <main class="auth-wrap">
+    <div class="auth-card">
+      <div>
+        <h1 class="auth-title">Login Admin</h1>
+        <p class="auth-sub" style="margin-top:8px;">Kelola data UMKM Dusun 6 &mdash; Desa Way Huwi</p>
+      </div>
+
+      <!-- Form -->
+      <form class="auth-form" onsubmit="return false;">
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="input" id="email" type="email" placeholder="admin@desawayhuwi.id" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">Kata Sandi</label>
+          <input class="input" id="password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password">
+        </div>
+        <div class="auth-actions">
+          <a class="btn btn-primary btn-lg btn-wide" href="dashboard.html">Masuk ke Dashboard &rarr;</a>
+        </div>
+      </form>
+
+      <p class="auth-note">
+        Kredensial demo: <b>admin@desawayhuwi.id</b> / <b>admin123</b>
+      </p>
+      <p class="auth-note" style="margin-top:-8px;">
+        Halaman ini hanya untuk pengelola desa &mdash; <a class="footer-link" href="index.html" style="color:var(--green-dark);font-weight:600;">&larr; Kembali ke Beranda</a>
+      </p>
+    </div>
+  </main>
+
+</body>
+</html>

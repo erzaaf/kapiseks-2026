@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Data UMKM &mdash; Admin Dusun 6 Way Huwi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="admin.css?v=10">
+</head>
+<body>
+
+  <!-- ============ Navbar (gaya situs publik) ============ -->
+  <header class="adminbar">
+    <div class="container navbar-inner">
+      <div class="nav-brand">
+        <div class="brand-text">
+          <span class="brand-title">UMKM Way Huwi</span>
+          <span class="brand-sub">Dusun 6 &mdash; Kelola Data</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="nav-link active">Kelola Data</a>
+      </nav>
+      <div class="nav-actions" style="gap:10px;">
+        <div class="user-pill">
+          <span class="user-ava">P</span>
+          <div class="user-info">
+            <div class="user-name">Purnomo</div>
+            <div class="user-role">Admin Desa</div>
+          </div>
+        </div>
+        <a href="login.html" class="btn btn-ghost" style="padding:10px 18px;">Keluar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main container">
+
+    <!-- ============ Heading ============ -->
+    <div class="admin-head">
+      <div>
+        <h1 class="admin-title">Kelola Data UMKM</h1>
+      </div>
+      <button class="btn btn-primary" id="btnTambah">+ Tambah UMKM</button>
+    </div>
+
+    <!-- ============ Statistik ============ -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-ico" style="background:var(--green-light);">&#128203;</span>
+        </div>
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">Total UMKM terdata</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-ico" style="background:var(--green-light);">&#127869;</span>
+        </div>
+        <div class="stat-num" id="statKuliner">0</div>
+        <div class="stat-label">Kuliner</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-ico" style="background:var(--amber-light);">&#128717;</span>
+        </div>
+        <div class="stat-num" id="statPerdagangan">0</div>
+        <div class="stat-label">Perdagangan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-ico" style="background:var(--blue-light);">&#129525;</span>
+        </div>
+        <div class="stat-num" id="statKerajinan">0</div>
+        <div class="stat-label">Kerajinan</div>
+      </div>
+    </div>
+
+    <!-- ============ Toolbar ============ -->
+    <div class="toolbar">
+      <div class="admin-search">
+        <span>&#128269;</span>
+        <input type="text" id="inputCari" placeholder="Cari nama usaha, pemilik, atau lokasi...">
+      </div>
+      <div class="filter-row" id="filterChips">
+        <button class="chip chip-solid chip-green" data-cat="Semua">Semua</button>
+        <button class="chip chip-outline" data-cat="Kuliner">Kuliner</button>
+        <button class="chip chip-outline" data-cat="Perdagangan">Perdagangan</button>
+        <button class="chip chip-outline" data-cat="Kerajinan">Kerajinan</button>
+        <button class="chip chip-outline" data-cat="Jasa">Jasa</button>
+        <button class="chip chip-outline" data-cat="Lainnya">Lainnya</button>
+      </div>
+    </div>
+
+    <!-- ============ Tabel UMKM ============ -->
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:38%;">UMKM</th>
+              <th>Kategori</th>
+              <th>Lokasi</th>
+              <th style="width:80px;text-align:right;"></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="table-foot">
+        <span id="footInfo">Menampilkan 8 dari 33 UMKM</span>
+        <span>&larr; Sebelumnya &nbsp;&bull;&nbsp; Halaman 1 dari 5 &nbsp;&bull;&nbsp; Berikutnya &rarr;</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============ Modal Tambah / Ubah UMKM ============ -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modalTitle">Tambah UMKM</h2>
+        <button class="icon-btn" id="modalX" title="Tutup">&#10005;</button>
+      </div>
+      <form id="formUmkm" style="display:flex;flex-direction:column;gap:16px;">
+        <input type="hidden" id="fId">
+        <div class="field">
+          <label for="fNama">Nama Usaha</label>
+          <input class="input" id="fNama" type="text" placeholder="Contoh: Warung Bu Sari">
+        </div>
+        <div class="field">
+          <label for="fPemilik">Nama Pemilik</label>
+          <input class="input" id="fPemilik" type="text" placeholder="Contoh: Sari Wulandari">
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label for="fKategori">Kategori</label>
+            <select class="input" id="fKategori">
+              <option>Kuliner</option>
+              <option>Perdagangan</option>
+              <option>Kerajinan</option>
+              <option>Jasa</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fLokasi">Lokasi</label>
+            <input class="input" id="fLokasi" type="text" placeholder="Contoh: Dusun 6, RT 01">
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="btnBatal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const KEY = "admin_umkm_wayhuwi";
+
+    const EMOJI = {
+      "Kuliner": "\uD83C\uDF5E",
+      "Perdagangan": "\uD83E\uDE9F",
+      "Kerajinan": "\uD83E\uDDF5",
+      "Jasa": "\uD83D\uDE98",
+      "Lainnya": "\uD83C\uDFEA"
+    };
+    const GRAD = {
+      "Kuliner": "card-img-green",
+      "Perdagangan": "card-img-amber",
+      "Kerajinan": "card-img-blue",
+      "Jasa": "card-img-neutral",
+      "Lainnya": "card-img-neutral"
+    };
+    const CHIP = {
+      "Kuliner": "chip-green",
+      "Perdagangan": "chip-amber",
+      "Kerajinan": "chip-blue",
+      "Jasa": "chip-neutral",
+      "Lainnya": "chip-neutral"
+    };
+
+    // Data contoh — pas pertama dibuka disimpan ke localStorage,
+    // sehingga tambah/ubah/hapus tetap ada saat halaman di-refresh.
+    const SEED = [
+      { id: 1, nama: "Warung Bu Sari",          pemilik: "Sari Wulandari", kategori: "Kuliner",      lokasi: "Jl. Raya Way Huwi" },
+      { id: 2, nama: "Toko Kelontong Jaya",     pemilik: "Budi Santoso",   kategori: "Perdagangan",  lokasi: "Dusun 6, RT 02" },
+      { id: 3, nama: "Kerajinan Anyaman Pak Min", pemilik: "Suhairi Minang", kategori: "Kerajinan",  lokasi: "Gang Kenanga, Dusun 6" },
+      { id: 4, nama: "Kue Basah Mama Nia",      pemilik: "Nia Kartika",    kategori: "Kuliner",      lokasi: "Dusun 6, RT 01" },
+      { id: 5, nama: "Bengkel Rusli Motor",     pemilik: "Rusli Andika",   kategori: "Jasa",         lokasi: "Jl. Desa Way Huwi" },
+      { id: 6, nama: "Es Lilin Barokah",        pemilik: "Rahmi Putri",    kategori: "Perdagangan",  lokasi: "Dusun 6, RT 03" },
+      { id: 7, nama: "Warung Kopi Senja",       pemilik: "Dedi Prakoso",   kategori: "Kuliner",      lokasi: "Jl. Melati, Dusun 6" },
+      { id: 8, nama: "Laundry Banjar Sari",     pemilik: "Wulan Sari",     kategori: "Jasa",         lokasi: "Jl. Pendidikan, depan SDN 1" }
+    ];
+
+    let data;
+    try {
+      data = JSON.parse(localStorage.getItem(KEY)) || SEED;
+    } catch (e) { data = SEED; }
+    if (!Array.isArray(data) || data.length === 0) data = SEED;
+
+    function simpan() { localStorage.setItem(KEY, JSON.stringify(data)); }
+
+    const $ = (id) => document.getElementById(id);
+    const rowsEl = $("rows");
+
+    // ===== Render tabel =====
+    function render() {
+      const q = $("inputCari").value.trim().toLowerCase();
+      const cat = state.cat;
+
+      const cocok = data.filter(function (d) {
+        const withinCat = cat === "Semua" || d.kategori === cat;
+        const withinQ = !q ||
+          d.nama.toLowerCase().includes(q) ||
+          d.pemilik.toLowerCase().includes(q) ||
+          d.lokasi.toLowerCase().includes(q);
+        return withinCat && withinQ;
+      });
+
+      rowsEl.innerHTML = "";
+      if (cocok.length === 0) {
+        rowsEl.innerHTML = "<tr><td class='empty-cell' colspan='4'>Tidak ada UMKM yang cocok dengan pencarian.</td></tr>";
+      }
+
+      for (const d of cocok) {
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td><div class='cell-biz'>" +
+            "<span class='biz-ava " + GRAD[d.kategori] + "'>" + (EMOJI[d.kategori] || EMOJI["Lainnya"]) + "</span>" +
+            "<div><div class='biz-name'>" + d.nama + "</div>" +
+            "<div class='biz-owner'>" + d.pemilik + "</div></div>" +
+          "</div></td>" +
+          "<td><span class='chip chip-solid " + (CHIP[d.kategori] || "chip-neutral") + "'>" + d.kategori + "</span></td>" +
+          "<td>" + d.lokasi + "</td>" +
+          "<td><div class='cell-actions'>" +
+            "<button class='icon-btn' data-edit='" + d.id + "' title='Ubah'>&#9998;</button>" +
+            "<button class='icon-btn danger' data-del='" + d.id + "' title='Hapus'>&#128465;</button>" +
+          "</div></td>";
+        rowsEl.appendChild(tr);
+      }
+
+      $("footInfo").textContent = "Menampilkan " + cocok.length + " dari " + data.length + " UMKM";
+      $("statTotal").textContent = data.length;
+      const hit = {};
+      for (const d of data) { hit[d.kategori] = (hit[d.kategori] || 0) + 1; }
+      $("statKuliner").textContent = hit["Kuliner"] || 0;
+      $("statPerdagangan").textContent = hit["Perdagangan"] || 0;
+      $("statKerajinan").textContent = hit["Kerajinan"] || 0;
+    }
+
+    let state = { cat: "Semua" };
+
+    // ===== Cari =====
+    $("inputCari").addEventListener("input", render);
+
+    // ===== Filter kategori =====
+    $("filterChips").addEventListener("click", function (e) {
+      const b = e.target.closest("button.chip");
+      if (!b) return;
+      state.cat = b.dataset.cat;
+      for (const c of this.children) {
+        c.classList.toggle("chip-solid", c === b);
+        c.classList.toggle("chip-green", c === b);
+        c.classList.toggle("chip-outline", c !== b);
+      }
+      render();
+    });
+
+    // ===== Modal =====
+    const modal = $("modal");
+
+    function buka(add) {
+      $("modalTitle").textContent = add ? "Tambah UMKM" : "Ubah UMKM";
+      $("formUmkm").reset();
+      if (!add) {
+        const d = data.find(function (x) { return x.id === editId; });
+        $("fId").value = d.id; $("fNama").value = d.nama;
+        $("fPemilik").value = d.pemilik; $("fKategori").value = d.kategori;
+        $("fLokasi").value = d.lokasi;
+      }
+      modal.classList.add("show");
+      $("fNama").focus();
+    }
+
+    function tutup() { modal.classList.remove("show"); }
+
+    let editId = null;
+    $("btnTambah").addEventListener("click", function () { editId = null; buka(true); });
+    $("modalX").addEventListener("click", tutup);
+    $("btnBatal").addEventListener("click", tutup);
+    modal.addEventListener("click", function (e) { if (e.target === modal) tutup(); });
+
+    $("formUmkm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const baru = {
+        nama: $("fNama").value.trim(),
+        pemilik: $("fPemilik").value.trim(),
+        kategori: $("fKategori").value,
+        lokasi: $("fLokasi").value.trim()
+      };
+      if (!baru.nama || !baru.pemilik || !baru.lokasi) { alert("Nama usaha, pemilik, dan lokasi wajib diisi."); return; }
+
+      if (editId === null) {
+        baru.id = (data.length ? Math.max.apply(null, data.map(function (d) { return d.id; })) : 0) + 1;
+        data.unshift(baru);
+      } else {
+        const d = data.find(function (x) { return x.id === editId; });
+        Object.assign(d, baru);
+      }
+      simpan(); tutup(); render();
+    });
+
+    // ===== Ubah & hapus (delegasi klik) =====
+    rowsEl.addEventListener("click", function (e) {
+      const be = e.target.closest("[data-edit]");
+      const bd = e.target.closest("[data-del]");
+      if (be) {
+        editId = Number(be.dataset.edit);
+        buka(false);
+      } else if (bd) {
+        const d = data.find(function (x) { return x.id === Number(bd.dataset.del); });
+        if (confirm("Hapus \"" + d.nama + "\" dari direktori?")) {
+          data = data.filter(function (x) { return x.id !== d.id; });
+          simpan(); render();
+        }
+      }
+    });
+
+    render();
+    window.__dbg = { get: () => ({ data, state }) };
+  </script>
+
+</body>
+</html>

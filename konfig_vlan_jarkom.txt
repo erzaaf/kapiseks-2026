@@ -1,0 +1,161 @@
+KONFIGURASI VLAN + ROUTER-ON-A-STICK + DHCP
+Sumber tabel: Tabel_IP_VLAN_Erza.xlsx (sheet "IP VLAN")
+Topologi: V5.2.pts | Semua host: 144.124.192.0/24 (mask 255.255.255.0)
+
+ASUMSI (sesuaikan bila dosen menentukan lain):
+- Mask semua /24 : 255.255.255.0
+- Gateway tiap VLAN = 144.124.192.254 (subinterface router)
+- Pool DHCP VLAN 40 = 144.124.192.100 - 150 (di luar .1-.15 statis)
+- Port Fa0/X di bawah CONTOH — ganti dengan nomor port di topologimu.
+  Prinsip: 1 port akses = 1 VLAN. Port ke router = trunk.
+
+==============================================================
+1. SWITCH (misal Switch0)
+==============================================================
+enable
+configure terminal
+hostname SW-UTAMA
+
+vlan 10
+ name SERVER
+vlan 20
+ name STAFF
+vlan 30
+ name LAB-PRODI
+vlan 40
+ name MAHASISWA
+exit
+
+! --- Port akses VLAN 10 (contoh Fa0/1-4: SRV_01, SRV_02, STF_01, STF_02)
+interface range fa0/1 - 4
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+exit
+
+! --- Port akses VLAN 20 (contoh Fa0/5-7: SRV_03, STF_03, STF_04)
+interface range fa0/5 - 7
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+exit
+
+! --- Port akses VLAN 30 (contoh Fa0/8-15: LAB1_01..PRODI_02)
+interface range fa0/8 - 15
+ switchport mode access
+ switchport access vlan 30
+ no shutdown
+exit
+
+! --- Port akses VLAN 40 (contoh Fa0/16-18 ke AP / MHS_01-03)
+interface range fa0/16 - 18
+ switchport mode access
+ switchport access vlan 40
+ no shutdown
+exit
+
+! --- Trunk ke router (contoh Fa0/24; kalau ada Gi0/1 pakai itu)
+interface fa0/24
+ switchport mode trunk
+ no shutdown
+exit
+
+end
+write memory
+
+! Verifikasi:
+!   show vlan brief
+!   show interfaces trunk
+
+==============================================================
+2. ROUTER (router-on-a-stick, contoh kabel ke G0/0)
+==============================================================
+enable
+configure terminal
+hostname R-UTAMA
+
+interface g0/0
+ no shutdown
+exit
+
+interface g0/0.10
+ description Gateway-VLAN10-SERVER
+ encapsulation dot1Q 10
+ ip address 144.124.192.254 255.255.255.0
+ no shutdown
+exit
+
+interface g0/0.20
+ description Gateway-VLAN20-STAFF
+ encapsulation dot1Q 20
+ ip address 144.124.192.254 255.255.255.0
+ no shutdown
+exit
+
+interface g0/0.30
+ description Gateway-VLAN30-LAB-PRODI
+ encapsulation dot1Q 30
+ ip address 144.124.192.254 255.255.255.0
+ no shutdown
+exit
+
+interface g0/0.40
+ description Gateway-VLAN40-MAHASISWA
+ encapsulation dot1Q 40
+ ip address 144.124.192.254 255.255.255.0
+ no shutdown
+exit
+
+! --- DHCP hanya untuk VLAN 40 (MHS_01-03), .1-.99 dikecualikan
+ip dhcp excluded-address 144.124.192.1 144.124.192.99
+ip dhcp pool VLAN40-MHS
+ network 144.124.192.0 255.255.255.0
+ default-router 144.124.192.254
+ dns-server 8.8.8.8
+exit
+
+end
+write memory
+
+! Verifikasi:
+!   show ip interface brief
+!   show ip dhcp binding   (setelah MHS request IP)
+
+==============================================================
+3. END DEVICE STATIS (klik device > Desktop > IP Configuration)
+   IP sesuai tabel, Subnet 255.255.255.0, Gateway 144.124.192.254
+==============================================================
+SRV_01   144.124.192.1    VLAN 10
+SRV_02   144.124.192.2    VLAN 10
+SRV_03   144.124.192.3    VLAN 20
+STF_01   144.124.192.4    VLAN 10
+STF_02   144.124.192.5    VLAN 10
+STF_03   144.124.192.6    VLAN 20
+STF_04   144.124.192.7    VLAN 20
+LAB1_01  144.124.192.8    VLAN 30
+LAB1_02  144.124.192.9    VLAN 30
+LAB2_01  144.124.192.10   VLAN 30
+LAB2_02  144.124.192.11   VLAN 30
+LAB3_01  144.124.192.12   VLAN 30
+LAB3_02  144.124.192.13   VLAN 30
+PRODI_01 144.124.192.14   VLAN 30
+PRODI_02 144.124.192.15   VLAN 30
+
+4. MHS_01-03 (VLAN 40): IP Configuration > pilih DHCP.
+   Seharusnya dapat 144.124.192.100+ , gateway .254.
+
+==============================================================
+5. UJI (untuk laporan)
+==============================================================
+- Ping se-VLAN: dari LAB1_01 ke 144.124.192.9
+- Ping antar-VLAN: dari LAB1_01 (.8) ke SRV_01 (.1) -> HARUS reply
+  (bukti router-on-a-stick jalan)
+- Ping gateway: ke 144.124.192.254
+- Di PC: ipconfig /all  dan  arp -a  (screenshot untuk laporan)
+- Di switch: show mac address-table
+
+Kalau ping gagal, cek berurutan:
+1. show vlan brief (port sudah masuk VLAN benar?)
+2. show interfaces trunk (trunk up?)
+3. show ip interface brief di router (subinterface up/up?)
+4. Gateway di PC = .254? Mask /24?
