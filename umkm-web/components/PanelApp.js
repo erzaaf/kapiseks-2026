@@ -12,16 +12,6 @@ import { KATEGORI, KATEGORI_META, UMKM, PANEL_SEED, IURAN_SEED } from "@/data/um
 const RTS = ["RT 05", "RT 05A", "RT 06", "RT 06A"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-const TXT = {
-  "Kuliner": "ptxt-green",
-  "Perdagangan": "ptxt-amber",
-  "Kerajinan": "ptxt-blue",
-  "Jasa": "ptxt-muted",
-  "Lainnya": "ptxt-muted",
-};
-
-const STAT_ICONS = { "Kuliner": "\u{1F372}", "Perdagangan": "\u{1F392}", "Kerajinan": "\u{1FA9E}" };
-
 const SESS_KEY = "umkmweb_sess";
 const DATA_KEY = "umkmweb_umkm";
 const IURAN_KEY = "umkmweb_iuran";
@@ -104,10 +94,10 @@ export default function PanelApp() {
       const hit = {};
       for (const d of list) hit[d.kategori] = (hit[d.kategori] || 0) + 1;
       return [
-        { ico: "\u{1F4CB}", bg: "ico-green", num: list.length, label: "Total UMKM terdata" + suf },
-        { ico: STAT_ICONS["Kuliner"], bg: "ico-green", num: hit["Kuliner"] || 0, label: "Kuliner" + suf },
-        { ico: STAT_ICONS["Perdagangan"], bg: "ico-amber", num: hit["Perdagangan"] || 0, label: "Perdagangan" + suf },
-        { ico: STAT_ICONS["Kerajinan"], bg: "ico-blue", num: hit["Kerajinan"] || 0, label: "Kerajinan" + suf },
+        { num: list.length, label: "Total UMKM terdata" + suf },
+        { num: hit["Kuliner"] || 0, label: "Kuliner" + suf },
+        { num: hit["Perdagangan"] || 0, label: "Perdagangan" + suf },
+        { num: hit["Kerajinan"] || 0, label: "Kerajinan" + suf },
       ];
     }
     const now = new Date();
@@ -123,10 +113,10 @@ export default function PanelApp() {
     }
     const blnName = MONTHS[now.getFullYear() === year ? now.getMonth() : 0];
     return [
-      { ico: "\u{1F4B0}", bg: "ico-green", num: "Rp " + rp(sumMonth), label: "Iuran " + blnName + " \u2014 " + rtNow },
-      { ico: "\u2705", bg: "ico-green", num: sudah, label: "Sudah bayar \u2014 " + rtNow },
-      { ico: "\u{1F552}", bg: "ico-amber", num: belum, label: "Belum bayar \u2014 " + rtNow },
-      { ico: "\u{1F4E6}", bg: "ico-blue", num: "Rp " + rp(sumYear), label: "Total tahun " + year + " \u2014 " + rtNow },
+      { num: "Rp " + rp(sumMonth), label: "Iuran " + blnName + " \u2014 " + rtNow },
+      { num: sudah, label: "Sudah bayar \u2014 " + rtNow },
+      { num: belum, label: "Belum bayar \u2014 " + rtNow },
+      { num: "Rp " + rp(sumYear), label: "Total tahun " + year + " \u2014 " + rtNow },
     ];
   }
 
@@ -369,9 +359,8 @@ export default function PanelApp() {
         <div className="pstatgrid">
           {renderStats().map((s, i) => (
             <div className="pstatcard" key={i}>
-              <span className={"pstat-ico " + s.bg}>{s.ico}</span>
+              <span className="pstat-title">{s.label}</span>
               <span className="pstat-num">{s.num}</span>
-              <span className="pstat-label">{s.label}</span>
             </div>
           ))}
         </div>
@@ -450,7 +439,7 @@ export default function PanelApp() {
                             </div>
                           </td>
                           <td>
-                            <span className={"pcat-txt " + TXT[d.kategori]}>{d.kategori}</span>
+                            <span className="pcat-txt">{d.kategori}</span>
                           </td>
                           <td style={{ color: "var(--muted)" }}>{d.lokasi}</td>
                           <td>
@@ -482,11 +471,6 @@ export default function PanelApp() {
         {/* ============ TAB: IURAN ============ */}
         {tab === "iuran" && (
           <section>
-            <p style={{ marginTop: 12, fontSize: 14, color: "var(--muted)" }}>
-              Iuran terbagi per RT &mdash; klik sel bulan untuk mencatat pembayaran
-              seperti buku iuran. Default nominal <b style={{ color: "var(--green-dark)" }}>Rp 10.000</b>/bulan.
-            </p>
-
             {/* pemilih RT */}
             <div className="punders" style={{ marginTop: 16 }}>
               {RTS.map((r) => (

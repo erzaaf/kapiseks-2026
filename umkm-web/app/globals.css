@@ -1585,25 +1585,14 @@ button.chip:hover {
 .pstatcard {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   border: 1px solid var(--border);
   background: #FFFFFF;
   border-radius: 16px;
   padding: 20px;
 }
-.pstat-ico {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-}
-.ico-green { background: var(--green-light); }
-.ico-amber { background: var(--amber-light); }
-.ico-blue { background: var(--blue-light); }
-.pstat-num { font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.25px; }
-.pstat-label { font-size: 13px; color: var(--muted); }
+.pstat-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.pstat-num { font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -0.25px; color: var(--green-dark); }
 
 /* Baris tab garis bawah (RT & pemilihan) */
 .punders {
@@ -1718,7 +1707,7 @@ button.chip:hover {
 .pbiz-name { font-size: 14px; font-weight: 700; }
 .pbiz-owner { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-.pcat-txt { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.pcat-txt { font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--text); }
 .ptxt-green { color: var(--green-dark); }
 .ptxt-amber { color: #8A5A00; }
 .ptxt-blue { color: #1E4FA8; }
