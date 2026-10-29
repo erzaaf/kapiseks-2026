@@ -6,7 +6,7 @@
 
 | Folder | Keterangan |
 |---|---|
-| `umkm-web/` | **Frontend utama** — Next.js (sesuai proposal): beranda, tentang desa, direktori UMKM, detail UMKM, panduan usaha, halaman masuk |
+| `umkm-web/` | **Frontend utama** — Next.js (sesuai proposal): beranda, tentang desa, direktori UMKM, detail UMKM, panduan usaha, halaman masuk, panel perangkat desa |
 | `backup-design-html-v1/` | Backup desain HTML statis versi pertama (design system asli) |
 
 ## Teknologi (sesuai proposal)
@@ -25,7 +25,11 @@
 - **Detail UMKM** (`/umkm/[id]`) — profil usaha, produk, alamat, kontak, jam operasional
 - **Tentang Desa** (`/tentang`) — profil desa + target SDG 8.3
 - **Panduan Usaha** (`/panduan`) — artikel pemasaran digital, permodalan, legalitas NIB
-- **Masuk** (`/masuk`) — shell login perangkat desa & pelaku UMKM (otentikasi backend menyusul)
+- **Masuk** (`/masuk`) — shell login; kredensial demo `pemdes` / `desa123` → panel perangkat desa
+- **Panel Perangkat Desa** (`/panel`) — login gate + dua tab:
+  - **Kelola Data**: statistik per RT/kategori, pencarian & filter kategori, tambah/ubah/hapus UMKM
+  - **Iuran Bulanan**: buku iuran per RT (12 bulan + JUMLAH), klik selbulan untuk catat/hapus pembayaran (default Rp 10.000), dropdown tahun, rekap otomatis
+  - Data tersimpan sementara di `localStorage` browser (backend database menyusul)
 
 ## Menjalankan
 

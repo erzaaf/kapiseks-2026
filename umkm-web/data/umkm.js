@@ -146,6 +146,23 @@ export const UMKM = [
   },
 ];
 
+/* Panel perangkat desa: seed data singkat (lokasi tanpa imbuhan RT) */
+export const PANEL_SEED = UMKM.map((u) => ({
+  id: u.id,
+  nama: u.nama,
+  pemilik: u.pemilik,
+  kategori: u.kategori,
+  rt: u.rt,
+  lokasi: u.alamat.replace(/,?\s*RT\s*\d{2}A?\s*$/, ""),
+}));
+
+/* Panel perangkat desa: contoh pencatatan iuran awal (Sep & Okt 2026) */
+export const IURAN_SEED = {
+  "1|2026-09": 10000, "2|2026-09": 10000, "3|2026-09": 10000, "4|2026-09": 10000, "5|2026-09": 10000, "6|2026-09": 10000,
+  "1|2026-10": 10000, "2|2026-10": 10000, "3|2026-10": 10000, "4|2026-10": 10000, "5|2026-10": 10000, "6|2026-10": 10000,
+  "7|2026-10": 5000,
+};
+
 /* Artikel panduan pengembangan usaha (fitur #5 proposal) */
 export const PANDUAN = [
   {

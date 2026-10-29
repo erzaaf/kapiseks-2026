@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-/* Shell login — backend otentikasi menyusul (NextAuth + database) */
+/* Login → panel perangkat desa (backend otentikasi menyusul) */
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   function submit(e) {
     e.preventDefault();
@@ -15,9 +16,7 @@ export default function LoginForm() {
       setError("Email dan kata sandi wajib diisi.");
       return;
     }
-    setError(
-      "Otentikasi backend belum aktif pada tahap frontend ini."
-    );
+    router.push("/panel");
   }
 
   return (
@@ -29,7 +28,7 @@ export default function LoginForm() {
           id="email"
           type="email"
           placeholder="nama@desawayhuwi.id"
-          autocomplete="username"
+          autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
