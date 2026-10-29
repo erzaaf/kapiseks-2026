@@ -1581,10 +1581,10 @@ button.chip:hover {
 @media (min-width: 900px) {
   .pstatgrid { grid-template-columns: repeat(4, 1fr); }
 }
-.pstatgrid.satu { grid-template-columns: 1fr; }
-.pstatgrid.satu .pstatcard { flex-direction: row; align-items: center; gap: 14px; }
-.pstatgrid.satu .pstat-title { min-height: 0; }
-.pstatgrid.satu .pstat-num { order: 2; }
+.pstatgrid.satu { grid-template-columns: 1fr; justify-items: start; }
+.pstatgrid.satu .pstatcard { flex-direction: row; align-items: center; gap: 16px; padding: 12px 24px; border-radius: 999px; width: fit-content; }
+.pstatgrid.satu .pstat-title { min-height: 0; font-size: 14px; }
+.pstatgrid.satu .pstat-num { order: 2; font-size: 20px; line-height: 1; }
 
 .pstatcard {
   display: flex;
