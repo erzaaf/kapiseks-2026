@@ -91,14 +91,7 @@ export default function PanelApp() {
     if (tab === "kelola") {
       const list = data.filter((d) => rtKelola === "Semua" || (d.rt || RTS[0]) === rtKelola);
       const suf = rtKelola === "Semua" ? "" : " \u2014 " + rtKelola;
-      const hit = {};
-      for (const d of list) hit[d.kategori] = (hit[d.kategori] || 0) + 1;
-      return [
-        { num: list.length, label: "Total UMKM terdata" + suf },
-        { num: hit["Kuliner"] || 0, label: "Kuliner" + suf },
-        { num: hit["Perdagangan"] || 0, label: "Perdagangan" + suf },
-        { num: hit["Kerajinan"] || 0, label: "Kerajinan" + suf },
-      ];
+      return [{ num: list.length, label: "Total UMKM terdata" + suf }];
     }
     const now = new Date();
     const rtNow = rt || RTS[0];
@@ -356,7 +349,7 @@ export default function PanelApp() {
         </div>
 
         {/* Statistik */}
-        <div className="pstatgrid">
+        <div className={"pstatgrid" + (renderStats().length === 1 ? " satu" : "")}>
           {renderStats().map((s, i) => (
             <div className="pstatcard" key={i}>
               <span className="pstat-title">{s.label}</span>

@@ -1581,6 +1581,10 @@ button.chip:hover {
 @media (min-width: 900px) {
   .pstatgrid { grid-template-columns: repeat(4, 1fr); }
 }
+.pstatgrid.satu { grid-template-columns: 1fr; }
+.pstatgrid.satu .pstatcard { flex-direction: row; align-items: center; gap: 14px; }
+.pstatgrid.satu .pstat-title { min-height: 0; }
+.pstatgrid.satu .pstat-num { order: 2; }
 
 .pstatcard {
   display: flex;
