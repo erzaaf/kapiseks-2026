@@ -1585,14 +1585,27 @@ button.chip:hover {
 .pstatcard {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid var(--border);
   background: #FFFFFF;
   border-radius: 16px;
-  padding: 20px;
+  padding: 18px 20px;
 }
-.pstat-title { font-size: 15px; font-weight: 700; color: var(--text); }
-.pstat-num { font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -0.25px; color: var(--green-dark); }
+.pstat-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.45;
+  min-height: 41.5px; /* ruang 2 baris agar angka antar-kartu sejajar */
+}
+.pstat-num {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.25px;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
 
 /* Baris tab garis bawah (RT & pemilihan) */
 .punders {
