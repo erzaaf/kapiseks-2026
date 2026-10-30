@@ -89,7 +89,7 @@ export default function PanelApp() {
   function renderStats() {
     if (tab === "kelola") {
       const list = data.filter((d) => rtKelola === "Semua" || (d.rt || RTS[0]) === rtKelola);
-      const suf = rtKelola === "Semua" ? "" : " \u2014 " + rtKelola;
+      const suf = rtKelola === "Semua" ? "" : " (" + rtKelola + ")";
       return [{ num: list.length, label: "Total UMKM terdata" + suf }];
     }
     const now = new Date();
@@ -105,10 +105,10 @@ export default function PanelApp() {
     }
     const blnName = MONTHS[now.getFullYear() === year ? now.getMonth() : 0];
     return [
-      { num: "Rp " + rp(sumMonth), label: "Iuran " + blnName + " \u2014 " + rtNow },
-      { num: sudah, label: "Sudah bayar \u2014 " + rtNow },
-      { num: belum, label: "Belum bayar \u2014 " + rtNow },
-      { num: "Rp " + rp(sumYear), label: "Total tahun " + year + " \u2014 " + rtNow },
+      { num: "Rp " + rp(sumMonth), label: "Iuran " + blnName + " (" + rtNow + ")" },
+      { num: sudah, label: "Sudah bayar (" + rtNow + ")" },
+      { num: belum, label: "Belum bayar (" + rtNow + ")" },
+      { num: "Rp " + rp(sumYear), label: "Total tahun " + year + " (" + rtNow + ")" },
     ];
   }
 

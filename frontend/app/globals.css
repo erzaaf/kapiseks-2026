@@ -1666,20 +1666,22 @@ button.chip:hover {
   font-size: 14px;
   color: var(--text);
 }
-.pchips { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.pchips { display: flex; flex-wrap: wrap; gap: 8px; }
 .pchip {
-  background: none;
-  border: 0;
   font-family: var(--font);
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 14px;
   cursor: pointer;
-  padding: 2px 0;
-  transition: color 0.2s ease;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
-.pchip:hover { color: var(--text); }
-.pchip.aktif { color: var(--green-dark); font-weight: 800; }
+.pchip:hover { color: var(--green-dark); border-color: var(--green); background: var(--green-light); }
+.pchip.aktif { background: var(--green); border-color: var(--green); color: #FFFFFF; font-weight: 700; }
 
 /* Kartu tabel */
 .pcard {
