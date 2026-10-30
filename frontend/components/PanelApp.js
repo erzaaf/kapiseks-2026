@@ -52,6 +52,7 @@ export default function PanelApp() {
   const [rt, setRt] = useState("RT 05");
   const [editId, setEditId] = useState(null);
   const [umkmOpen, setUmkmOpen] = useState(false);
+  const [detailId, setDetailId] = useState(null);
   const [paying, setPaying] = useState(null);
 
   /* form modal UMKM */
@@ -202,8 +203,8 @@ export default function PanelApp() {
   }
   function simpanUmkm(e) {
     e.preventDefault();
-    if (!fNama.trim() || !fPemilik.trim() || !fLokasi.trim()) {
-      setUmkmErr("Nama usaha, pemilik, dan lokasi wajib diisi.");
+    if (!fNama.trim() || !fPemilik.trim()) {
+      setUmkmErr("Nama usaha dan pemilik wajib diisi.");
       return;
     }
     if (editId === null) {
@@ -442,7 +443,7 @@ export default function PanelApp() {
                     {cocok.map((d) => {
                       const meta = KATEGORI_META[d.kategori] || KATEGORI_META["Lainnya"];
                       return (
-                        <tr key={d.id}>
+                        <tr key={d.id} className="prow-klik" onClick={() => setDetailId(d.id)} style={{ cursor: "pointer" }}>
                           <td>
                             <div className="pcell-biz">
                               {d.foto ? (
@@ -461,11 +462,11 @@ export default function PanelApp() {
                           <td>
                             <span className="pcat-txt">{d.kategori}</span>
                           </td>
-                          <td style={{ color: "var(--muted)" }}>{d.lokasi}</td>
+                          <td style={{ color: "var(--muted)" }}>{d.lokasi || "\u2014"}</td>
                           <td>
                             <div className="pactions">
-                              <button className="pico-btn" title="Ubah" onClick={() => bukaUbah(d.id)}>&#9998;</button>
-                              <button className="pico-btn pico-del" title="Hapus" onClick={() => hapusUmkm(d.id)}>&#128465;</button>
+                              <button className="pico-btn" title="Ubah" onClick={(e) => { e.stopPropagation(); bukaUbah(d.id); }}>&#9998;</button>
+                              <button className="pico-btn pico-del" title="Hapus" onClick={(e) => { e.stopPropagation(); hapusUmkm(d.id); }}>&#128465;</button>
                             </div>
                           </td>
                         </tr>
@@ -589,6 +590,45 @@ export default function PanelApp() {
         )}
       </main>
 
+      {/* ============ Modal Detail UMKM ============ */}
+      {detailId !== null && (() => {
+        const d = data.find((x) => x.id === detailId);
+        if (!d) return null;
+        const meta = KATEGORI_META[d.kategori] || KATEGORI_META["Lainnya"];
+        return (
+          <div className="pmodal" onClick={(e) => { if (e.target === e.currentTarget) setDetailId(null); }}>
+            <div className="pmodal-card pdet">
+              {d.foto ? (
+                <img className="pdet-foto" src={d.foto} alt={d.nama} />
+              ) : (
+                <div className={"pdet-foto pdet-foto-grad grad-" + (KATEGORI.includes(d.kategori) ? d.kategori : "Lainnya")}>
+                  <span>{meta.emoji}</span>
+                </div>
+              )}
+              <div className="pmodal-head">
+                <h2 className="pmodal-title">{d.nama}</h2>
+                <button className="pico-btn" onClick={() => setDetailId(null)}>&#10005;</button>
+              </div>
+              <p className="pdet-owner">{d.pemilik}</p>
+              <dl className="pdet-rows">
+                <div><dt>Kategori</dt><dd>{d.kategori}</dd></div>
+                <div><dt>RT</dt><dd>{d.rt || "\u2014"}</dd></div>
+                <div><dt>Alamat usaha</dt><dd>{d.lokasi || "\u2014"}</dd></div>
+              </dl>
+              <div className="pmodal-actions">
+                <button
+                  className="pbtn-ghost"
+                  onClick={() => { setDetailId(null); bukaUbah(d.id); }}
+                >
+                  &#9998; Ubah Data
+                </button>
+                <button className="pbtn-primary" onClick={() => setDetailId(null)}>Tutup</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ============ Modal Tambah/Ubah UMKM ============ */}
       {umkmOpen && (
         <div className="pmodal" onClick={(e) => { if (e.target === e.currentTarget) tutupUmkm(); }}>
@@ -623,7 +663,7 @@ export default function PanelApp() {
                 </div>
               </div>
               <div className="pfield">
-                <label className="plabel">Lokasi</label>
+                <label className="plabel">Lokasi (opsional)</label>
                 <input className="input" value={fLokasi} onChange={(e) => setFLokasi(e.target.value)} placeholder="Contoh: Jl. Raya Way Huwi" />
               </div>
               <div className="pfield">
