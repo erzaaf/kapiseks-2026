@@ -60,6 +60,7 @@ export default function PanelApp() {
   const [fKategori, setFKategori] = useState("Kuliner");
   const [fRt, setFRt] = useState("RT 05");
   const [fLokasi, setFLokasi] = useState("");
+  const [fFoto, setFFoto] = useState("");
   const [umkmErr, setUmkmErr] = useState("");
 
   /* form modal iuran */
@@ -68,7 +69,10 @@ export default function PanelApp() {
   /* muat dari localStorage saat mount (hindari hydration mismatch) */
   useEffect(() => {
     const d = loadLS(DATA_KEY, null);
-    if (Array.isArray(d) && d.length > 0) setData(d);
+    if (Array.isArray(d) && d.length > 0) {
+      /* migrasi nama kategori lama → baru */
+      setData(d.map((x) => ({ ...x, kategori: x.kategori === "Perdagangan" ? "Sembako" : x.kategori })));
+    }
     const i = loadLS(IURAN_KEY, null);
     if (i && typeof i === "object" && !Array.isArray(i)) setIuran(i);
     if (window.localStorage.getItem(SESS_KEY) === "1") setMasuk(true);
@@ -108,7 +112,7 @@ export default function PanelApp() {
       { num: "Rp " + rp(sumMonth), label: "Iuran " + blnName + " (" + rtNow + ")" },
       { num: sudah, label: "Sudah bayar (" + rtNow + ")" },
       { num: belum, label: "Belum bayar (" + rtNow + ")" },
-      { num: "Rp " + rp(sumYear), label: "Total tahun " + year + " (" + rtNow + ")" },
+      { num: "Rp " + rp(sumYear), label: "Total " + year + " (" + rtNow + ")" },
     ];
   }
 
@@ -160,10 +164,30 @@ export default function PanelApp() {
   }
 
   /* ================= Aksi CRUD ================= */
+  function pilihFoto(e) {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = ""; /* agar file sama bisa dipilih lagi */
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new window.Image();
+      img.onload = () => {
+        /* perkecil maks 400px supaya cukup hemat di localStorage */
+        const s = Math.min(1, 400 / Math.max(img.width, img.height));
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(img.width * s));
+        c.height = Math.max(1, Math.round(img.height * s));
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        setFFoto(c.toDataURL("image/jpeg", 0.75));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
   function bukaTambah() {
     setEditId(null);
     setUmkmOpen(true);
-    setFNama(""); setFPemilik(""); setFKategori("Kuliner"); setFLokasi("");
+    setFNama(""); setFPemilik(""); setFKategori("Kuliner"); setFLokasi(""); setFFoto("");
     setFRt(rtKelola === "Semua" ? RTS[0] : rtKelola);
     setUmkmErr("");
   }
@@ -173,7 +197,7 @@ export default function PanelApp() {
     setEditId(id);
     setUmkmOpen(true);
     setFNama(d.nama); setFPemilik(d.pemilik); setFKategori(d.kategori);
-    setFRt(d.rt || RTS[0]); setFLokasi(d.lokasi);
+    setFRt(d.rt || RTS[0]); setFLokasi(d.lokasi); setFFoto(d.foto || "");
     setUmkmErr("");
   }
   function simpanUmkm(e) {
@@ -186,13 +210,13 @@ export default function PanelApp() {
       const baru = {
         id: data.length ? Math.max(...data.map((d) => d.id)) + 1 : 1,
         nama: fNama.trim(), pemilik: fPemilik.trim(), kategori: fKategori,
-        rt: fRt, lokasi: fLokasi.trim(),
+        rt: fRt, lokasi: fLokasi.trim(), foto: fFoto || null,
       };
       setData([baru].concat(data));
     } else {
       setData(data.map((d) =>
         d.id === editId
-          ? { ...d, nama: fNama.trim(), pemilik: fPemilik.trim(), kategori: fKategori, rt: fRt, lokasi: fLokasi.trim() }
+          ? { ...d, nama: fNama.trim(), pemilik: fPemilik.trim(), kategori: fKategori, rt: fRt, lokasi: fLokasi.trim(), foto: fFoto || null }
           : d
       ));
     }
@@ -369,7 +393,7 @@ export default function PanelApp() {
                 </button>
               ))}
             </div>
-            {/* pencarian + kategori */}
+            {/* pencarian + filter kategori */}
             <div className="pbar">
               <div className="psearch">
                 <span>&#128269;</span>
@@ -380,16 +404,19 @@ export default function PanelApp() {
                   placeholder="Cari nama usaha, pemilik, atau lokasi..."
                 />
               </div>
-              <div className="pchips">
-                {["Semua"].concat(KATEGORI).map((k) => (
-                  <button
-                    key={k}
-                    className={"pchip" + (cat === k ? " aktif" : "")}
-                    onClick={() => setCat(k)}
-                  >
-                    {k}
-                  </button>
-                ))}
+              <div className="pfilter">
+                <label className="pfilter-label" htmlFor="fKat">Filter kategori</label>
+                <select
+                  className="input"
+                  id="fKat"
+                  value={cat}
+                  onChange={(e) => setCat(e.target.value)}
+                >
+                  <option value="Semua">Semua kategori</option>
+                  {KATEGORI.map((k) => (
+                    <option key={k} value={k}>{k}</option>
+                  ))}
+                </select>
               </div>
             </div>
             {/* tabel */}
@@ -413,14 +440,18 @@ export default function PanelApp() {
                       </tr>
                     )}
                     {cocok.map((d) => {
-                      const meta = KATEGORI_META[d.kategori];
+                      const meta = KATEGORI_META[d.kategori] || KATEGORI_META["Lainnya"];
                       return (
                         <tr key={d.id}>
                           <td>
                             <div className="pcell-biz">
-                              <span className={"pbiz-ava grad-" + d.kategori}>
-                                {meta.emoji}
-                              </span>
+                              {d.foto ? (
+                                <img className="pbiz-img" src={d.foto} alt={d.nama} />
+                              ) : (
+                                <span className={"pbiz-ava grad-" + (KATEGORI.includes(d.kategori) ? d.kategori : "Lainnya")}>
+                                  {meta.emoji}
+                                </span>
+                              )}
                               <div>
                                 <div className="pbiz-name">{d.nama}</div>
                                 <div className="pbiz-owner">{d.pemilik}</div>
@@ -579,7 +610,7 @@ export default function PanelApp() {
                 <div className="pfield">
                   <label className="plabel">Kategori</label>
                   <select className="input" value={fKategori} onChange={(e) => setFKategori(e.target.value)}>
-                    {["Kuliner", "Perdagangan", "Kerajinan", "Jasa", "Lainnya"].map((k) => (
+                    {KATEGORI.map((k) => (
                       <option key={k}>{k}</option>
                     ))}
                   </select>
@@ -594,6 +625,26 @@ export default function PanelApp() {
               <div className="pfield">
                 <label className="plabel">Lokasi</label>
                 <input className="input" value={fLokasi} onChange={(e) => setFLokasi(e.target.value)} placeholder="Contoh: Jl. Raya Way Huwi" />
+              </div>
+              <div className="pfield">
+                <label className="plabel">Foto Usaha (opsional)</label>
+                <div className="pfoto-row">
+                  {fFoto ? (
+                    <img className="pfoto-prev" src={fFoto} alt="Pratinjau foto usaha" />
+                  ) : (
+                    <span className="pfoto-prev pfoto-empty">No photo</span>
+                  )}
+                  <div className="pfoto-acts">
+                    <label className="pbtn-ghost pfoto-btn">
+                      Pilih Foto&hellip;
+                      <input type="file" accept="image/*" hidden onChange={pilihFoto} />
+                    </label>
+                    {fFoto && (
+                      <button type="button" className="pbtn-danger" onClick={() => setFFoto("")}>Hapus Foto</button>
+                    )}
+                  </div>
+                </div>
+                <span className="pfoto-note">Foto otomatis dikecilkan (maks 400px) untuk disimpan lokal.</span>
               </div>
               {umkmErr && <p className="perr">{umkmErr}</p>}
               <div className="pmodal-actions">

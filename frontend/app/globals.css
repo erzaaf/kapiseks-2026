@@ -1666,22 +1666,52 @@ button.chip:hover {
   font-size: 14px;
   color: var(--text);
 }
-.pchips { display: flex; flex-wrap: wrap; gap: 8px; }
-.pchip {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
+/* Dropdown filter kategori */
+.pfilter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pfilter-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.pfilter select {
+  min-width: 220px;
   background: #FFFFFF;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 14px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
   cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
+  appearance: auto;
 }
-.pchip:hover { color: var(--green-dark); border-color: var(--green); background: var(--green-light); }
-.pchip.aktif { background: var(--green); border-color: var(--green); color: #FFFFFF; font-weight: 700; }
+.pfilter select:focus { outline: none; border-color: var(--green); }
+/* Foto usaha (skala thumbnail & modal) */
+.pbiz-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.pfoto-row { display: flex; align-items: center; gap: 14px; }
+.pfoto-prev {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--neutralx, #F0F2F1);
+}
+.pfoto-empty { flex-shrink: 0; }
+.pfoto-acts { display: flex; flex-direction: column; gap: 8px; }
+.pfoto-btn { display: inline-flex; align-items: center; justify-content: center; cursor: pointer; width: fit-content; }
+.pfoto-note { font-size: 12px; color: var(--muted); }
 
 /* Kartu tabel */
 .pcard {
@@ -1762,7 +1792,7 @@ button.chip:hover {
 
 /* Gradient avatar per kategori */
 .grad-Kuliner { background: linear-gradient(135deg, #CDEBDC, #A9DFC5); }
-.grad-Perdagangan { background: linear-gradient(135deg, #FBE3B5, #F5C465); }
+.grad-Sembako { background: linear-gradient(135deg, #FBE3B5, #F5C465); }
 .grad-Kerajinan { background: linear-gradient(135deg, #D5E3F5, #A9C4EC); }
 .grad-Jasa { background: linear-gradient(135deg, #E6E9E7, #C9CFCC); }
 .grad-Lainnya { background: linear-gradient(135deg, #E6E9E7, #C9CFCC); }

@@ -5,7 +5,7 @@
 
 export const KATEGORI = [
   "Kuliner",
-  "Perdagangan",
+  "Sembako",
   "Kerajinan",
   "Jasa",
   "Lainnya",
@@ -17,7 +17,7 @@ export const KATEGORI_META = {
     chip: "chip chip-green",
     img: "card-img-green",
   },
-  "Perdagangan": {
+  "Sembako": {
     emoji: "\u{1F392}",
     chip: "chip chip-amber",
     img: "card-img-amber",
@@ -57,7 +57,7 @@ export const UMKM = [
     id: 2,
     nama: "Toko Kelontong Jaya",
     pemilik: "Budi Santoso",
-    kategori: "Perdagangan",
+    kategori: "Sembako",
     rt: "RT 05A",
     alamat: "Perumahan Asri 1 Blok A, RT 05A",
     deskripsi:
@@ -109,7 +109,7 @@ export const UMKM = [
     id: 6,
     nama: "Es Lilin Barokah",
     pemilik: "Rahmi Putri",
-    kategori: "Perdagangan",
+    kategori: "Sembako",
     rt: "RT 06A",
     alamat: "Griya Way Huwi Blok C, RT 06A",
     deskripsi:
