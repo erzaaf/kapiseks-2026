@@ -92,11 +92,7 @@ export default function PanelApp() {
 
   /* ================= Statistik ================= */
   function renderStats() {
-    if (tab === "kelola") {
-      const list = data.filter((d) => rtKelola === "Semua" || (d.rt || RTS[0]) === rtKelola);
-      const suf = rtKelola === "Semua" ? "" : " (" + rtKelola + ")";
-      return [{ num: list.length, label: "Total UMKM terdata" + suf }];
-    }
+    if (tab === "kelola") return [];
     const now = new Date();
     const rtNow = rt || RTS[0];
     const list = data.filter((d) => (d.rt || RTS[0]) === rtNow);
@@ -369,20 +365,22 @@ export default function PanelApp() {
           )}
         </div>
 
-        {/* Statistik */}
-        <div className={"pstatgrid" + (renderStats().length === 1 ? " satu" : "")}>
-          {renderStats().map((s, i) => (
-            <div className="pstatcard" key={i}>
-              <span className="pstat-title">{s.label}</span>
-              <span className="pstat-num">{s.num}</span>
-            </div>
-          ))}
-        </div>
+        {/* Statistik (iuran saja — kelola pakai hitungan di baris RT) */}
+        {renderStats().length > 0 && (
+          <div className="pstatgrid">
+            {renderStats().map((s, i) => (
+              <div className="pstatcard" key={i}>
+                <span className="pstat-title">{s.label}</span>
+                <span className="pstat-num">{s.num}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* ============ TAB: KELOLA ============ */}
         {tab === "kelola" && (
           <section>
-            {/* pemilih RT */}
+            {/* pemilih RT + hitungan total */}
             <div className="punders pmt-6">
               {["Semua"].concat(RTS).map((r) => (
                 <button
@@ -393,6 +391,10 @@ export default function PanelApp() {
                   {r === "Semua" ? "Semua RT" : r}
                 </button>
               ))}
+              <span className="pcount">
+                <b>{data.filter((d) => rtKelola === "Semua" || (d.rt || RTS[0]) === rtKelola).length}</b>
+                {" "}UMKM terdata
+              </span>
             </div>
             {/* pencarian + filter kategori */}
             <div className="pbar">

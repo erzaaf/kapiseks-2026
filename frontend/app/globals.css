@@ -1581,10 +1581,16 @@ button.chip:hover {
 @media (min-width: 900px) {
   .pstatgrid { grid-template-columns: repeat(4, 1fr); }
 }
-.pstatgrid.satu { grid-template-columns: 1fr; justify-items: start; }
-.pstatgrid.satu .pstatcard { flex-direction: row; align-items: baseline; gap: 14px; padding: 14px 24px; border-radius: 14px; width: fit-content; }
-.pstatgrid.satu .pstat-title { min-height: 0; font-size: 14px; font-weight: 600; color: var(--muted); }
-.pstatgrid.satu .pstat-num { order: 2; font-size: 24px; font-weight: 800; line-height: 1; }
+
+/* Hitungan total di ujung kanan baris tab RT */
+.pcount {
+  margin-left: auto;
+  padding-bottom: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.pcount b { color: var(--green-dark); font-weight: 800; }
 
 .pstatcard {
   display: flex;
