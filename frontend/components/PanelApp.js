@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { KATEGORI, KATEGORI_META, UMKM, PANEL_SEED, IURAN_SEED } from "@/data/umkm";
 
 /* ============================================================
@@ -278,10 +277,7 @@ export default function PanelApp() {
             Akun demo: <b>pemdes</b> / <b>desa123</b>
           </p>
           <p className="auth-note" style={{ marginTop: -8 }}>
-            Halaman khusus perangkat desa &mdash;{" "}
-            <Link href="/" style={{ color: "var(--green-dark)", fontWeight: 600 }}>
-              &larr; Kembali ke Beranda
-            </Link>
+            Halaman khusus perangkat desa &mdash; Desa Way Huwi
           </p>
         </div>
       </section>

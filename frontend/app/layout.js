@@ -2,11 +2,11 @@ import "./globals.css";
 
 export const metadata = {
   title: {
-    default: "UMKM Dusun 6 — Desa Way Huwi",
-    template: "%s — UMKM Way Huwi",
+    default: "Panel Perangkat Desa — UMKM Dusun 6, Desa Way Huwi",
+    template: "%s — Panel UMKM Way Huwi",
   },
   description:
-    "Website informasi & pendataan UMKM Dusun 6, Desa Way Huwi, Kecamatan Jati Agung, Kabupaten Lampung Selatan.",
+    "Panel kelola data & iuran bulanan UMKM Dusun 6, Desa Way Huwi, Kecamatan Jati Agung, Kabupaten Lampung Selatan.",
 };
 
 export default function RootLayout({ children }) {

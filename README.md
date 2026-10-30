@@ -1,45 +1,41 @@
-# Kapita Selekta 2026 — Website UMKM Way Huwi
+# Kapita Selekta 2026 — Panel UMKM Dusun 6, Desa Way Huwi
 
-**Digitalisasi Pendataan UMKM Berbasis Web untuk Meningkatkan Efektivitas Pengelolaan dan Akses Informasi di Desa Way Huwi** — Kelompok 4, Kapita Selekta Informatika ITERA 2026.
+**Kelola Data & Iuran Bulanan UMKM Berbasis Web untuk Meningkatkan Efektivitas Pengelolaan di Desa Way Huwi** — Kelompok 4, Kapita Selekta Informatika ITERA 2026.
 
 ## Struktur Repo
 
 | Folder | Keterangan |
 |---|---|
-| `umkm-web/` | **Frontend utama** — Next.js (sesuai proposal): beranda, tentang desa, direktori UMKM, detail UMKM, panduan usaha, halaman masuk, panel perangkat desa |
-| `backup-design-html-v1/` | Backup desain HTML statis versi pertama (design system asli) |
+| `frontend/` | **Frontend Next.js** — login perangkat desa + panel **Kelola Data** & **Iuran Bulanan** |
+
+> Backup desain HTML statis versi pertama dihapus dari repo (masih tersimpan di riwayat commit).
 
 ## Teknologi (sesuai proposal)
 
 1. Framework: **Next.js** (App Router)
 2. Bahasa: **JavaScript**
-3. Styling: **CSS** (design system di `umkm-web/app/globals.css`)
-4. Database: **PostgreSQL (Neon)** — *tahap backend, data saat ini masih dummy di `umkm-web/data/umkm.js`*
+3. Styling: **CSS** (design system di `frontend/app/globals.css`)
+4. Database: **PostgreSQL (Neon)** — *tahap backend; data saat ini masih dummy di `frontend/data/umkm.js` + localStorage*
 5. Desain UI/UX: **Figma**
 6. Kolaborasi: **GitHub**
 
-## Fitur Frontend (dummy data, backend menyusul)
+## Fitur Frontend
 
-- **Beranda** — hero + pencarian + slider rekomendasi + statistik dinamis dari data
-- **Direktori UMKM** (`/umkm`) — pencarian, filter kategori, pengelompokan per jenis usaha
-- **Detail UMKM** (`/umkm/[id]`) — profil usaha, produk, alamat, kontak, jam operasional
-- **Tentang Desa** (`/tentang`) — profil desa + target SDG 8.3
-- **Panduan Usaha** (`/panduan`) — artikel pemasaran digital, permodalan, legalitas NIB
-- **Masuk** (`/masuk`) — shell login; kredensial demo `pemdes` / `desa123` → panel perangkat desa
-- **Panel Perangkat Desa** (`/panel`) — login gate + dua tab:
-  - **Kelola Data**: statistik per RT/kategori, pencarian & filter kategori, tambah/ubah/hapus UMKM
-  - **Iuran Bulanan**: buku iuran per RT (12 bulan + JUMLAH), klik selbulan untuk catat/hapus pembayaran (default Rp 10.000), dropdown tahun, rekap otomatis
-  - Data tersimpan sementara di `localStorage` browser (backend database menyusul)
+- **Login** (`/`) — gate panel, kredensial demo `pemdes` / `desa123`
+- **Panel Perangkat Desa** (`/panel`) — dua tab:
+  - **Kelola Data**: pil RT (Semua RT / RT 05 / 05A / 06 / 06A), pencarian & filter kategori, tambah/ubah/hapus UMKM (modal + konfirmasi), kartu total per RT
+  - **Iuran Bulanan**: buku iuran per RT — 12 kolom bulan + kolom **JUMLAH** + baris **JUMLAH RT**, klik sel bulan untuk catat/hapus pembayaran (default Rp 10.000), dropdown tahun, rekap otomatis
+- Catatan pembayaran tersimpan sementara di `localStorage` browser (backend database menyusul)
 
 ## Menjalankan
 
 ```bash
-cd umkm-web
+cd frontend
 npm install
 npm run dev
 ```
 
-Buka `http://localhost:3000`.
+Buka `http://localhost:3000` → login → panel.
 
 ## Tim
 

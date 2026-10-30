@@ -40,7 +40,7 @@ export default function LoginForm() {
           id="password"
           type="password"
           placeholder="••••••••"
-          autocomplete="current-password"
+          autoComplete="current-password"
           value={pass}
           onChange={(e) => setPass(e.target.value)}
         />
